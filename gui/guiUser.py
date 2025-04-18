@@ -87,10 +87,16 @@ class MinhaTela:
         if self.contador_win > 2:
             self.contador_win = 0
             self.entrada = self.entradaRow
+            self.label_lose.config(text=f"{self.entrada:.2f}")
+            self.valueLose = 0
+            self.contador_lose = 1
             total = 0
 
         self.label_win.config(text=f"{total:.2f}")
         self.contador_win += 1
+        
+
+
 
         
     def botao2_clicado(self):

@@ -10,8 +10,10 @@ class MinhaTela:
         # Contadores
         self.contador_win = 1
         self.contador_lose = 1
+        self.valueLose = 0
         self.entrada = 0
-
+        self.resultado = 0
+        self.entradaRow = 0
         self.products = Products()
 
         self.criar_componentes()
@@ -73,27 +75,72 @@ class MinhaTela:
         botao_set_entrada.place(x=10, y=10)  # Posicionado no canto superior esquerdo
 
         # Label para mostrar a entrada atual
-        self.label_entrada_atual = tk.Label(self.janela, text="Entrada: ---", fg="white", bg="black", font=("Arial", 12))
+        self.label_entrada_atual = tk.Label(self.janela, text="Entrada: 000", fg="white", bg="black", font=("Arial", 12))
         self.label_entrada_atual.place(x=110, y=14)
 
 
     def botao1_clicado(self):
-        entrada = self.products.calculoEntrada(self.entrada)
+        print("botao", self.entrada, self.contador_win)
+        total = self.products.calculo(self.entrada, self.contador_win)
+        resultado = self.products.bruto(self.entrada, total)
 
-        total = self.products.calculo(entrada, self.contador_win)
-        resultado = self.products.bruto(entrada, total)
+        if self.contador_win > 2:
+            self.contador_win = 0
+            self.entrada = self.entradaRow
+            total = 0
 
         self.label_win.config(text=f"{total:.2f}")
         self.contador_win += 1
 
+        
     def botao2_clicado(self):
-        entrada = self.entrada
-        entrada = self.products.calculoEntrada(entrada)
+        self.contador_win = 1
+        print(self.contador_lose)
 
-        total = self.products.calculo(entrada, self.contador_win)
-        resultado = self.products.bruto(entrada, total)
+        if  self.contador_lose == 1:
+            self.valueLose += self.entrada
 
-        self.label_lose.config(text=f"{resultado:.2f}")
+        elif  self.contador_lose == 2:
+            self.entrada += (self.entrada * 15)/100
+            self.valueLose += self.entrada
+
+        elif  self.contador_lose == 3:
+            self.entrada += (self.entrada * 40)/100
+            self.valueLose += self.entrada
+
+        elif  self.contador_lose == 4:
+            self.entrada += (self.entrada * 40)/100
+            self.valueLose += self.entrada
+
+        elif  self.contador_lose == 5:
+            self.entrada += (self.entrada * 30)/100
+            self.valueLose += self.entrada
+
+        elif  self.contador_lose == 6:
+            self.entrada += (self.entrada * 30)/100
+            self.valueLose += self.entrada
+        
+        elif  self.contador_lose == 7:
+            self.entrada += (self.entrada * 25)/100
+            self.valueLose += self.entrada
+
+        elif  self.contador_lose == 8:
+            self.entrada += (self.entrada * 30)/100
+            self.valueLose += self.entrada
+        
+        elif  self.contador_lose == 9:
+            self.entrada += (self.entrada * 40)/100
+            self.valueLose += self.entrada
+
+        elif  self.contador_lose == 10:
+            self.entrada += (self.entrada * 50)/100
+            self.valueLose += self.entrada
+
+        elif  self.contador_lose == 11:
+            self.entrada += (self.entrada * 35)/100
+            self.valueLose += self.entrada
+
+        self.label_lose.config(text=f"{self.entrada:.2f}")
         self.contador_lose += 1
 
     def abrir_janela_entrada(self):
@@ -112,7 +159,8 @@ class MinhaTela:
         def confirmar():
             try:
                 valor = float(entrada_var.get())
-                self.entrada = valor
+                self.entrada = self.products.calculoEntrada(valor)
+                self.entradaRow = self.entrada 
                 self.label_entrada_atual.config(text=f"Entrada: {valor}")
                 janela_input.destroy()
             except ValueError:
